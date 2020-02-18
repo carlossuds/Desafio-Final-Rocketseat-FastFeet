@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 
-import Recipients from '../models/Recipients';
+import Recipient from '../models/Recipient';
 
-class RecipientsController {
+class RecipientController {
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -18,23 +18,23 @@ class RecipientsController {
       return res.status(400).json('Validation failed');
     }
 
-    const recipientExists = await Recipients.findOne({
+    const recipientExists = await Recipient.findOne({
       where: { name: req.body.name, street: req.body.street },
     });
 
     if (recipientExists) {
       res.status(400).json({ error: 'Recipient already exists' });
     }
-    const recipient = await Recipients.create(req.body);
+    const recipient = await Recipient.create(req.body);
 
     return res.json(recipient);
   }
 
   async index(req, res) {
-    const recipients = await Recipients.findAll();
+    const recipients = await Recipient.findAll();
 
     return res.json(recipients);
   }
 }
 
-export default new RecipientsController();
+export default new RecipientController();

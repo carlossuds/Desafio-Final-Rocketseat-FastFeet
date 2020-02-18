@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 
-import Users from '../models/Users';
+import User from '../models/User';
 
-class UsersController {
+class UserController {
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -18,23 +18,23 @@ class UsersController {
       return res.status(400).json('Validation failed');
     }
 
-    const userExists = await Users.findOne({
+    const userExists = await User.findOne({
       where: { email: req.body.email },
     });
 
     if (userExists) {
       res.status(400).json({ error: 'User already exists' });
     }
-    const { id, name, email } = await Users.create(req.body);
+    const { id, name, email } = await User.create(req.body);
 
     return res.json({ id, name, email });
   }
 
   async index(req, res) {
-    const users = await Users.findAll();
+    const users = await User.findAll();
 
     return res.json(users);
   }
 }
 
-export default new UsersController();
+export default new UserController();
