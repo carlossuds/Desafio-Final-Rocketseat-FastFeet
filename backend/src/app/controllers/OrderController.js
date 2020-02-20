@@ -54,13 +54,19 @@ class OrderController {
   async index(req, res) {
     if (req.params.id) {
       const courierOrders = await Order.findAll({
-        where: { courier_id: req.params.id },
+        where: {
+          courier_id: req.params.id,
+          end_date: null,
+          canceled_at: null, // Encomendas que não foram Finalizadas ou Canceladas
+        },
+        order: [['id', 'ASC']],
       });
 
       return res.json(courierOrders);
     }
 
-    const orders = await Order.findAll();
+    // Todas Encomendas
+    const orders = await Order.findAll({ order: [['id', 'ASC']] });
 
     return res.json(orders);
   }
@@ -83,11 +89,12 @@ class OrderController {
         where: {
           courier_id: order.courier_id,
           start_date: {
-            [Op.between]: [startOfDay(new Date()), endOfDay(new Date())],
+            [Op.between]: [startOfDay(new Date()), endOfDay(new Date())], // Encomendas do Dia
           },
         },
       });
 
+      // Se ultrapassar o Limite Diário, retorna erro.
       if (courierOrders.length >= 5) {
         return res
           .status(401)
