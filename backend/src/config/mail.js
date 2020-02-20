@@ -7,6 +7,6 @@ export default {
     pass: '19467617cef902',
   },
   default: {
-    from: 'FastFeet <no-reply@gympoint.com',
+    from: 'FastFeet <no-reply@fastfeet.com',
   },
 };
