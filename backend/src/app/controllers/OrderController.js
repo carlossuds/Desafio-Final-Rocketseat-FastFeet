@@ -53,7 +53,20 @@ class OrderController {
 
   async index(req, res) {
     if (req.params.id) {
-      const courierOrders = await Order.findAll({
+      if (req.params.ended) {
+        const endedCourierOrders = await Order.findAll({
+          where: {
+            courier_id: req.params.id,
+            end_date: {
+              [Op.between]: [new Date(0), new Date()],
+            }, // Encomendas que foram Entregues
+          },
+          order: [['id', 'ASC']],
+        });
+        return res.json(endedCourierOrders);
+      }
+
+      const openCourierOrders = await Order.findAll({
         where: {
           courier_id: req.params.id,
           end_date: null,
@@ -62,10 +75,10 @@ class OrderController {
         order: [['id', 'ASC']],
       });
 
-      return res.json(courierOrders);
+      return res.json(openCourierOrders);
     }
 
-    // Todas Encomendas
+    // Todas Encomendas de todos Entregadores
     const orders = await Order.findAll({ order: [['id', 'ASC']] });
 
     return res.json(orders);

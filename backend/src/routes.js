@@ -30,9 +30,12 @@ routes.post('/couriers', CourierController.store);
 routes.put('/couriers/:id', CourierController.update);
 routes.delete('/couriers/:id', CourierController.destroy);
 
+routes.get('/couriers/:id/orders', OrderController.index);
+routes.get('/couriers/:id/orders/:ended', OrderController.index);
+
 routes.post('/orders', OrderController.store);
 routes.get('/orders', OrderController.index);
-routes.get('/couriers/:id/orders', OrderController.index);
+routes.get('/orders/:problems', OrderController.index);
 routes.put('/orders/:id', OrderController.update);
 routes.put('/orders/:id/:cancel', OrderController.update);
 

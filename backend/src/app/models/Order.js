@@ -28,6 +28,10 @@ class Order extends Model {
       foreignKey: 'signature_id',
       as: 'signature',
     });
+    this.belongsTo(models.OrderProblems, {
+      foreignKey: 'problem_id',
+      as: 'problem',
+    });
   }
 }
 export default Order;

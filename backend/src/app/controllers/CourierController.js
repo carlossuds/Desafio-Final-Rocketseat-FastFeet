@@ -4,7 +4,7 @@ import Courier from '../models/Courier';
 
 class CourierController {
   async index(req, res) {
-    const couriers = await Courier.findAll();
+    const couriers = await Courier.findAll({ order: [['name', 'DESC']] });
 
     return res.json(couriers);
   }
