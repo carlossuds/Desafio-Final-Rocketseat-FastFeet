@@ -87,15 +87,6 @@ class OrderController {
   async update(req, res) {
     const order = await Order.findByPk(req.params.id);
 
-    // Encomenda a ser Cancelada
-    if (req.params.cancel) {
-      const canceled_at = new Date();
-
-      await order.update({ canceled_at });
-
-      return res.json(order);
-    }
-
     // Encomenda a ser Iniciada
     if (!order.start_date) {
       const courierOrders = await Order.findAll({
