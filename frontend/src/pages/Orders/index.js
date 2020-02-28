@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GoPlus } from 'react-icons/go';
 import { IoIosMore } from 'react-icons/io';
 import { Container, Top, TableHeaders, OrderList, OrderItem } from './styles';
 
+import api from '../../services/api';
+
 export default function Orders() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function loadOrders() {
+      const response = await api.get('/orders');
+
+      setOrders(response.data);
+    }
+    loadOrders();
+  }, []);
+
   return (
     <Container>
       <h1>Gerenciando encomendas</h1>
@@ -35,42 +48,17 @@ export default function Orders() {
       </TableHeaders>
 
       <OrderList>
-        <OrderItem>
-          <span>#01</span>
-          <span>Laura Caetano</span>
-          <span>Carlos Suds</span>
-          <span>Recife</span>
-          <span>Pernambuco</span>
-          <span>Confirmado</span>
-          <IoIosMore size={20} color="#666666" />
-        </OrderItem>
-        <OrderItem>
-          <span>#01</span>
-          <span>Laura Caetano</span>
-          <span>Carlos Suds</span>
-          <span>Recife</span>
-          <span>Pernambuco</span>
-          <span>Confirmado</span>
-          <IoIosMore size={20} color="#666666" />
-        </OrderItem>
-        <OrderItem>
-          <span>#01</span>
-          <span>Laura Caetano</span>
-          <span>Carlos Suds</span>
-          <span>Recife</span>
-          <span>Pernambuco</span>
-          <span>Confirmado</span>
-          <IoIosMore size={20} color="#666666" />
-        </OrderItem>
-        <OrderItem>
-          <span>#01</span>
-          <span>Laura Caetano</span>
-          <span>Carlos Suds</span>
-          <span>Recife</span>
-          <span>Pernambuco</span>
-          <span>Confirmado</span>
-          <IoIosMore size={20} color="#666666" />
-        </OrderItem>
+        {orders.map(order => (
+          <OrderItem key={order.order.id}>
+            <span>{`#${order.order.id}`}</span>
+            <span>{order.recipient.name}</span>
+            <span>{order.courier.name}</span>
+            <span>{order.recipient.city}</span>
+            <span>{order.recipient.state}</span>
+            <span>Confirmado</span>
+            <IoIosMore size={20} color="#666666" />
+          </OrderItem>
+        ))}
       </OrderList>
     </Container>
   );

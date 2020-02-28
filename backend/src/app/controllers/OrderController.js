@@ -81,7 +81,18 @@ class OrderController {
     // Todas Encomendas de todos Entregadores
     const orders = await Order.findAll({ order: [['id', 'ASC']] });
 
-    return res.json(orders);
+    const ordersWithData = [];
+
+    await Promise.all(
+      orders.map(async order => {
+        const recipient = await Recipient.findByPk(order.recipient_id);
+        const courier = await Courier.findByPk(order.courier_id);
+
+        ordersWithData.push({ order, recipient, courier });
+      }),
+    );
+
+    return res.json(ordersWithData);
   }
 
   async update(req, res) {
