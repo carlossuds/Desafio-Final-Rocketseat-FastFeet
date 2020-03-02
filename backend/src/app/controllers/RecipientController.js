@@ -41,7 +41,9 @@ class RecipientController {
         : null,
     );
 
-    return res.json(selectedRecipients);
+    return res.json(
+      selectedRecipients.length > 1 ? selectedRecipients : recipients,
+    );
   }
 }
 

@@ -14,7 +14,7 @@ class CourierController {
         : null,
     );
 
-    return res.json(selectedCouriers);
+    return res.json(selectedCouriers.length > 1 ? selectedCouriers : couriers);
   }
 
   async store(req, res) {

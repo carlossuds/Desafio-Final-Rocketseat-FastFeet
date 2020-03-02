@@ -95,12 +95,18 @@ class OrderController {
     const selectedOrdersWithData = [];
 
     ordersWithData.map(order =>
-      order.order.product.toLowerCase().match(req.query.q.toLowerCase())
+      order.order.product
+        .toLowerCase()
+        .match(req.query.q ? req.query.q.toLowerCase() : null)
         ? selectedOrdersWithData.push(order)
         : null,
     );
 
-    return res.json(selectedOrdersWithData);
+    return res.json(
+      selectedOrdersWithData.length > 1
+        ? selectedOrdersWithData
+        : ordersWithData,
+    );
   }
 
   async update(req, res) {

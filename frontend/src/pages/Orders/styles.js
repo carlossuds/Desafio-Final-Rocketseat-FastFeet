@@ -76,3 +76,54 @@ export const OrderItem = styled.li`
     font-size: 16px;
   }
 `;
+
+export const Status = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 110px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 12px;
+
+  background-color: ${props => {
+    if (props.order.canceled_at) return '#FAB0B0';
+    else if (props.order.end_date) return '#DFF0DF';
+    else if (props.order.start_date) return '#BAD2FF';
+    else return '#F0F0DF';
+  }};
+
+  div {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: ${props => {
+      if (props.order.canceled_at) return '#DE3B3B';
+      else if (props.order.end_date) return '#2CA42B';
+      else if (props.order.start_date) return '#4D85EE';
+      else return '#C1BC35';
+    }};
+  }
+
+  strong {
+    color: ${props => {
+      if (props.order.canceled_at) return '#DE3B3B';
+      else if (props.order.end_date) return '#2CA42B';
+      else if (props.order.start_date) return '#4D85EE';
+      else return '#C1BC35';
+    }};
+  }
+`;
+
+export const ShowPlus = styled.div`
+  position: absolute;
+  width: 260px;
+  left: calc(50% - 130px);
+  top: calc(100% + 30px);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  padding: 15px 5px;
+  border: 1px solid black;
+  display: ${props => (props.visible ? 'block' : 'none')};
+`;

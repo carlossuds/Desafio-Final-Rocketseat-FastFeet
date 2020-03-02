@@ -23,6 +23,9 @@ export default function Header() {
         <nav>
           <img src={logo} alt="FastFeet" />
           <Link to="/encomendas">ENCOMENDAS</Link>
+          <Link to="/encomendas">ENTREGADORES</Link>
+          <Link to="/encomendas">DESTINATÁRIOS</Link>
+          <Link to="/encomendas">PROBLEMAS</Link>
         </nav>
 
         <aside>
