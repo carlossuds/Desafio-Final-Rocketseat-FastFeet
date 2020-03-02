@@ -33,7 +33,15 @@ class RecipientController {
   async index(req, res) {
     const recipients = await Recipient.findAll();
 
-    return res.json(recipients);
+    const selectedRecipients = [];
+
+    recipients.map(recipient =>
+      recipient.name.toLowerCase().match(req.query.q.toLowerCase())
+        ? selectedRecipients.push(recipient)
+        : null,
+    );
+
+    return res.json(selectedRecipients);
   }
 }
 

@@ -92,7 +92,15 @@ class OrderController {
       }),
     );
 
-    return res.json(ordersWithData);
+    const selectedOrdersWithData = [];
+
+    ordersWithData.map(order =>
+      order.order.product.toLowerCase().match(req.query.q.toLowerCase())
+        ? selectedOrdersWithData.push(order)
+        : null,
+    );
+
+    return res.json(selectedOrdersWithData);
   }
 
   async update(req, res) {

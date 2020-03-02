@@ -6,7 +6,15 @@ class CourierController {
   async index(req, res) {
     const couriers = await Courier.findAll({ order: [['name', 'DESC']] });
 
-    return res.json(couriers);
+    const selectedCouriers = [];
+
+    couriers.map(courier =>
+      courier.name.toLowerCase().match(req.query.q.toLowerCase())
+        ? selectedCouriers.push(courier)
+        : null,
+    );
+
+    return res.json(selectedCouriers);
   }
 
   async store(req, res) {
