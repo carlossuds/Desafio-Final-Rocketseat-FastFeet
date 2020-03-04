@@ -1,20 +1,37 @@
 import * as Yup from 'yup';
 
 import Courier from '../models/Courier';
+import File from '../models/File';
 
 class CourierController {
   async index(req, res) {
     const couriers = await Courier.findAll({ order: [['name', 'DESC']] });
 
-    const selectedCouriers = [];
+    const couriersWithAvatar = [];
 
-    couriers.map(courier =>
-      courier.name.toLowerCase().match(req.query.q.toLowerCase())
-        ? selectedCouriers.push(courier)
+    await Promise.all(
+      couriers.map(async courier => {
+        const file = await File.findByPk(courier.avatar_id);
+
+        couriersWithAvatar.push({ courier, file });
+      }),
+    );
+
+    const selectedCouriersWithAvatar = [];
+
+    couriersWithAvatar.map(courier =>
+      courier.courier.name
+        .toLowerCase()
+        .match(req.query.q ? req.query.q.toLowerCase() : null)
+        ? selectedCouriersWithAvatar.push(courier)
         : null,
     );
 
-    return res.json(selectedCouriers.length > 1 ? selectedCouriers : couriers);
+    return res.json(
+      selectedCouriersWithAvatar.length >= 1
+        ? selectedCouriersWithAvatar
+        : couriersWithAvatar,
+    );
   }
 
   async store(req, res) {

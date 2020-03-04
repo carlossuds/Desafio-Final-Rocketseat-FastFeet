@@ -48,7 +48,9 @@ export const Top = styled.div`
 `;
 
 export const TableHeaders = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1fr;
+
   justify-content: space-between;
   padding: 30px;
 
@@ -57,13 +59,15 @@ export const TableHeaders = styled.div`
   }
 `;
 
-export const OrderList = styled.ul`
+export const CourierList = styled.ul`
   display: flex;
   flex-direction: column;
 `;
 
-export const OrderItem = styled.li`
-  display: flex;
+export const CourierItem = styled.li`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1fr;
+
   justify-content: space-between;
   padding: 10px 30px;
   background: white;

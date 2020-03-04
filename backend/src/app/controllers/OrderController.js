@@ -5,6 +5,7 @@ import { isAfter, startOfDay, endOfDay } from 'date-fns';
 import Order from '../models/Order';
 import Courier from '../models/Courier';
 import Recipient from '../models/Recipient';
+import File from '../models/File';
 
 import Mail from '../../lib/Mail';
 
@@ -87,8 +88,9 @@ class OrderController {
       orders.map(async order => {
         const recipient = await Recipient.findByPk(order.recipient_id);
         const courier = await Courier.findByPk(order.courier_id);
+        const file = await File.findByPk(courier.avatar_id);
 
-        ordersWithData.push({ order, recipient, courier });
+        ordersWithData.push({ order, recipient, courier, file });
       }),
     );
 
@@ -103,7 +105,7 @@ class OrderController {
     );
 
     return res.json(
-      selectedOrdersWithData.length > 1
+      selectedOrdersWithData.length >= 1
         ? selectedOrdersWithData
         : ordersWithData,
     );

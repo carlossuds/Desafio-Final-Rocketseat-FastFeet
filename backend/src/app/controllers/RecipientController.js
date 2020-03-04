@@ -36,13 +36,15 @@ class RecipientController {
     const selectedRecipients = [];
 
     recipients.map(recipient =>
-      recipient.name.toLowerCase().match(req.query.q.toLowerCase())
+      recipient.name
+        .toLowerCase()
+        .match(req.query.q ? req.query.q.toLowerCase() : null)
         ? selectedRecipients.push(recipient)
         : null,
     );
 
     return res.json(
-      selectedRecipients.length > 1 ? selectedRecipients : recipients,
+      selectedRecipients.length >= 1 ? selectedRecipients : recipients,
     );
   }
 }
